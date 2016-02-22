@@ -10,9 +10,10 @@
 // Read Sprockets README (https://github.com/rails/sprockets#sprockets-directives) for details
 // about supported directives.
 //
-//= require react
-//= require react-dom
+//= require react.min
+//= require react-dom.min
 //= require browser
 //= require jquery
 //= require jquery_ujs
+//= require bootstrap.min
 //= require_tree .

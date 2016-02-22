@@ -1,2 +1,11 @@
-<h1>ToDoLists#edit</h1>
-<p>Find me in app/views/to_do_lists/edit.html.erb</p>
+<h1>Edit <%= @todo.name %></h1>
+<div class="row">
+  <%= simple_form_for(@todo, html: { class: 'form-vertical' }) do |f| %>
+    <div class="col-md-2">
+      <%= f.input :id, disabled: true, label: "ToDo List ID" %>
+    </div>
+  <% end %>
+</div>
+<a href="/" class="btn btn-default">Back to Lists</a>
+<div id="contentToDo"></div>
+<%= javascript_include_tag "components/to_do_list", :type => "text/babel" %>
