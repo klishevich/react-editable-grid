@@ -1,11 +1,11 @@
-var CCSessionBox = React.createClass({ 
+var ItemsBox = React.createClass({ 
     getInitialState: function() { 
-        this.loadCCSessionsFromServer(); 
+        this.loadItemsFromServer(); 
         return {data: []}; 
     }, 
-    loadCCSessionsFromServer: function() { 
+    loadItemsFromServer: function() { 
         $.ajax({ 
-            url: '/CourtCase/SessionsList/' + this.props.IdCourtCase, 
+            url: '/to_do_lists/' + this.props.to_do_list_id + '/to_do_list_items', 
             dataType: 'json', 
             cache: false, 
             success: function(data) { 
@@ -18,12 +18,12 @@ var CCSessionBox = React.createClass({
             }.bind(this) 
         }); 
     }, 
-    handleCCSessionSubmit: function(ccsession) { 
+    handleItemSubmit: function(item) { 
         $.ajax({ 
-            url: '/CourtCaseSession/Create', 
+            url: '/to_do_lists/' + this.props.to_do_list_id + '/to_do_list_items', 
             dataType: 'json', 
             type: 'POST', 
-            data: ccsession, 
+            data: item, 
             success: function(data) { 
                 this.setState({data: data}); 
             }.bind(this), 
@@ -32,12 +32,12 @@ var CCSessionBox = React.createClass({
             }.bind(this) 
         }); 
     }, 
-    handleCCSessionSave2: function(ccsession) { 
+    handleItemSave2: function(item) { 
         $.ajax({ 
-            url: '/CourtCaseSession/Edit', 
+            url: '/to_do_lists/' + this.props.to_do_list_id + '/to_do_list_items/' + item.id, 
             dataType: 'json', 
-            type: 'POST', 
-            data: ccsession, 
+            type: 'PUT', 
+            data: item, 
             success: function(data) { 
                 this.setState({data: data}); 
             }.bind(this), 
@@ -46,12 +46,12 @@ var CCSessionBox = React.createClass({
             }.bind(this) 
         }); 
     }, 
-    handleCCSessionDelete2: function(ccsession3) { 
+    handleItemDelete2: function(item) { 
         $.ajax({ 
-            url: '/CourtCaseSession/Delete', 
+            url: '/to_do_lists/' + this.props.to_do_list_id + '/to_do_list_items/' + item.id, 
             dataType: 'json', 
-            type: 'POST', 
-            data: ccsession3, 
+            type: 'DELETE', 
+            data: item, 
             success: function(data) { 
                 this.setState({data: data}); 
             }.bind(this), 
@@ -62,272 +62,207 @@ var CCSessionBox = React.createClass({
     }, 
     render: function() { 
         return ( 
-          <div className="CCSessionBox"> 
-            <h3 className="tw-settings-header">Заседания</h3> 
-            <CCSessionList data={this.state.data} onCCSessionDelete2={this.handleCCSessionDelete2} onCCSessionSave2={this.handleCCSessionSave2} IdCourtCase = {this.props.IdCourtCase}/> 
-            <CCSessionForm onCCSessionSubmit={this.handleCCSessionSubmit} IdCourtCase = {this.props.IdCourtCase} /> 
+          <div className="ItemsBox"> 
+            <h3>ToDo Items</h3> 
+            <ItemsList data={this.state.data} onItemDelete2={this.handleItemDelete2} onItemSave2={this.handleItemSave2} to_do_list_id = {this.props.to_do_list_id}/> 
+            <ItemForm onItemSubmit={this.handleItemSubmit} to_do_list_id = {this.props.to_do_list_id} /> 
           </div> 
       ); 
     } 
 }); 
 
-var CCSessionList = React.createClass({ 
-    handleCCSessionDelete: function(ccsession2) { 
-        this.props.onCCSessionDelete2(ccsession2); 
+var ItemsList = React.createClass({ 
+    handleItemDelete: function(item) { 
+        this.props.onItemDelete2(item); 
     }, 
-    handleCCSessionSave: function(ccsession) { 
-        this.props.onCCSessionSave2(ccsession); 
+    handleItemSave: function(item) { 
+        this.props.onItemSave2(item); 
     }, 
     render: function() { 
-        var _this = this, ccsessionNodes = this.props.data.map(function(ccsession){ 
+        var _this = this, itemNodes = this.props.data.map(function(item){ 
             return ( 
-                <CCSession onCCSessionDelete={_this.handleCCSessionDelete} 
-                    onCCSessionSave={_this.handleCCSessionSave} 
-                    CourtName={ccsession.CourtName} 
-                    HearingDate={ccsession.HearingDate} 
-                    HearingPlace={ccsession.HearingPlace} 
-                    JudgeName={ccsession.JudgeName} 
-                    SessionResult={ccsession.SessionResult} 
-                    SessionResultDate={ccsession.SessionResultDate ? ccsession.SessionResultDate : ''} 
-                    EffectDate={ccsession.EffectDate ? ccsession.EffectDate : ''} 
-                    key={ccsession.IdCourtCaseSession} 
-                    IdCourtCaseSession={ccsession.IdCourtCaseSession} 
-                    IdCourtCase = {_this.props.IdCourtCase} 
-                    Errors = {ccsession.Errors}> 
-                </CCSession> 
+                <Item onItemDelete={_this.handleItemDelete} 
+                    onItemSave={_this.handleItemSave} 
+                    name={item.name} 
+                    plandate={item.plandate} 
+                    comment={item.comment} 
+                    factdate={item.factdate} 
+                    key={item.id}
+                    id={item.id}
+                    to_do_list_id={_this.props.to_do_list_id}> 
+                </Item> 
                 ); 
             }); 
         return ( 
-          <table className="CCSessionList table table-striped"> 
+          <table className="ItemsList table table-striped"> 
             <tbody> 
             <tr> 
-                <th>Наименование суда</th> 
-                <th>Дата заседания</th> 
-                <th>Место заседания</th> 
-                <th>Судья</th> 
-                <th>Результат заседаний</th> 
-                <th>Дата результата</th> 
-                <th>Дата вступления в силу</th> 
-                <th></th> 
-                <th></th> 
+                <th>Item Name</th> 
+                <th>PlanDate</th> 
+                <th>Comment</th> 
+                <th>FactDate</th>
+                <th></th>
+                <th></th>
             </tr> 
-                {ccsessionNodes} 
+                {itemNodes} 
             </tbody> 
           </table> 
       ); 
     } 
 }); 
 
-var CCSession = React.createClass({ 
+var Item = React.createClass({ 
     getInitialState: function() { 
-        return {edit: false, CourtName: '', HearingDate: '', HearingPlace: '', JudgeName: '', SessionResult: '', SessionResultDate: '', EffectDate: ''}; 
+        return {edit: false, name: '', plandate: '', comment: '', factdate: ''}; 
     }, 
-    handleCourtNameChange: function(e) { 
-        this.setState({CourtName: e.target.value}); 
+    handleNameChange: function(e) { 
+        this.setState({name: e.target.value}); 
     }, 
-    handleHearingDateChange: function(e) { 
-        this.setState({HearingDate: e.target.value}); 
+    handlePlandateChange: function(e) { 
+        this.setState({plandate: e.target.value}); 
     }, 
-    handleHearingPlaceChange: function(e) { 
-        this.setState({HearingPlace: e.target.value}); 
+    handleCommentChange: function(e) { 
+        this.setState({comment: e.target.value}); 
     }, 
-    handleJudgeNameChange: function(e) { 
-        this.setState({JudgeName: e.target.value}); 
-    }, 
-    handleSessionResultChange: function(e) { 
-        this.setState({SessionResult: e.target.value}); 
-    }, 
-    handleSessionResultDateChange: function(e) { 
-        this.setState({SessionResultDate: e.target.value}); 
-    }, 
-    handleEffectDateChange: function(e) { 
-        this.setState({EffectDate: e.target.value}); 
-    }, 
+    handleFactdateChange: function(e) { 
+        this.setState({factdate: e.target.value}); 
+    },  
     handleEdit: function(e) { 
         e.preventDefault(); 
-        this.setState({ edit: true, CourtName: this.props.CourtName, HearingDate: convertDateEdit(this.props.HearingDate), HearingPlace: this.props.HearingPlace, JudgeName: this.props.JudgeName, 
-            SessionResult: this.props.SessionResult, SessionResultDate: convertDateEdit(this.props.SessionResultDate), EffectDate: convertDateEdit(this.props.EffectDate)}); 
+        this.setState({ edit: true, name: this.props.name, plandate: this.props.plandate, 
+            comment: this.props.comment, factdate: this.props.factdate}); 
     }, 
     handleCancel: function(e) { 
         e.preventDefault(); 
-        this.setState({ edit: false, CourtName: this.props.CourtName, HearingDate: convertDateEdit(this.props.HearingDate), HearingPlace: this.props.HearingPlace, JudgeName: this.props.JudgeName, 
-            SessionResult: this.props.SessionResult, SessionResultDate: convertDateEdit(this.props.SessionResultDate), EffectDate: convertDateEdit(this.props.EffectDate)}); 
+        this.setState({ edit: false, name: this.props.name, plandate: this.props.plandate, 
+            comment: this.props.comment, factdate: this.props.factdate}); 
     }, 
     handleSave: function(e) { 
         e.preventDefault(); 
-        var CourtName = this.state.CourtName; 
-        var HearingDate = this.state.HearingDate; 
-        var HearingPlace = this.state.HearingPlace; 
-        var JudgeName = this.state.JudgeName; 
-        var SessionResult = this.state.SessionResult; 
-        var SessionResultDate = this.state.SessionResultDate; 
-        var EffectDate = this.state.EffectDate; 
-        var IdCourtCase = this.props.IdCourtCase; 
-        if (!CourtName || !HearingDate ) { 
+        var name = this.state.name; 
+        var plandate = this.state.plandate; 
+        var comment = this.state.comment; 
+        var factdate = this.state.factdate; 
+        if (!name || !plandate ) { 
             return; 
         } 
-        this.props.onCCSessionSave({ IdCourtCaseSession: this.props.IdCourtCaseSession, IdCourtCase: this.props.IdCourtCase, CourtName: CourtName, HearingDate: HearingDate, HearingPlace: HearingPlace, 
-            JudgeName: JudgeName, SessionResult: SessionResult, SessionResultDate: SessionResultDate, EffectDate: EffectDate}); 
+        this.props.onItemSave({ id: this.props.id, to_do_list_id: this.props.to_do_list_id, 
+            name: name, plandate: plandate, comment: comment, factdate: factdate}); 
         this.setState({ edit: false }); 
     }, 
     handleDelete: function(e) { 
-        this.props.onCCSessionDelete({ IdCourtCaseSession: this.props.IdCourtCaseSession, IdCourtCase: this.props.IdCourtCase}); 
+        this.props.onItemDelete({ id: this.props.id, to_do_list_id: this.props.to_do_list_id}); 
     }, 
-    ccsessionRowView: function() { 
-        return (<tr className="CCSession"> 
-            <td className="CCSessionCourtName">{this.props.CourtName}</td> 
-            <td className="CCSessionHearingDate">{convertDateShow(this.props.HearingDate)}</td> 
-            <td className="CCSessionHearingPlace">{this.props.HearingPlace}</td> 
-            <td className="CCSessionJudgeName">{this.props.JudgeName}</td> 
-            <td className="CCSessionResult">{this.props.SessionResult}</td> 
-            <td className="CCSessionResultDate">{convertDateShow(this.props.SessionResultDate)}</td> 
-            <td className="CCSessionEffectDate">{convertDateShow(this.props.EffectDate)}</td> 
-            <td className="CCSessionToggleEdit"><a href="#" className="btn btn-primary btn-sm" onClick={this.handleEdit}>Изменить</a></td> 
-            <td className="CCSessionDelete"><a href="#" className="btn btn-danger btn-sm" onClick={this.handleDelete}>Удалить</a></td> 
+    itemRowView: function() { 
+        return (<tr className="ItemView"> 
+            <td className="ItemName">{this.props.name}</td> 
+            <td className="ItemPlandate">{this.props.plandate}</td> 
+            <td className="ItemComment">{this.props.comment}</td> 
+            <td className="ItemFactdate">{this.props.factdate}</td> 
+            <td className="ItemEdit"><a href="#" className="btn btn-primary btn-sm" onClick={this.handleEdit}>Edit</a></td> 
+            <td className="ItemDelete"><a href="#" className="btn btn-danger btn-sm" onClick={this.handleDelete}>Delete</a></td> 
         </tr>); 
-    }, 
-    ccsessionRowViewError: function() { 
-        return (<tr className="CCSession"> 
-            <td className="CCSessionCourtName" colspan="2"><div className="alert alert-danger" role="alert">{this.props.Errors}</div>{this.props.CourtName}</td> 
-            <td className="CCSessionHearingDate">{convertDateShow(this.props.HearingDate)}</td> 
-            <td className="CCSessionHearingPlace">{this.props.HearingPlace}</td> 
-            <td className="CCSessionJudgeName">{this.props.JudgeName}</td> 
-            <td className="CCSessionResult">{this.props.SessionResult}</td> 
-            <td className="CCSessionResultDate">{convertDateShow(this.props.SessionResultDate)}</td> 
-            <td className="CCSessionEffectDate">{convertDateShow(this.props.EffectDate)}</td> 
-            <td className="CCSessionToggleEdit"><a href="#" className="btn btn-primary btn-sm" onClick={this.handleEdit}>Изменить</a></td> 
-            <td className="CCSessionDelete"><a href="#" className="btn btn-danger btn-sm" onClick={this.handleDelete}>Удалить</a></td> 
-        </tr>); 
-    }, 
-    ccsessionRowEdit: function() { 
-        return (<tr className="CCSession"> 
-            <td className="CCSessionCourtName"> 
-                <input className="form-control input-sm" type="text" placeholder="Суд" defaultValue={this.state.CourtName} onChange={this.handleCourtNameChange} /> 
+    },  
+    itemRowEdit: function() { 
+        return (<tr className="ItemEdit"> 
+            <td className="ItemName"> 
+                <input className="form-control input-sm" type="text" defaultValue={this.state.name} onChange={this.handleNameChange} /> 
             </td> 
-            <td className="CCSessionHearingDate"> 
-                <input className="form-control input-sm" type="date" defaultValue={this.state.HearingDate} onChange={this.handleHearingDateChange}/> 
+            <td className="ItemPlandate"> 
+                <input className="form-control input-sm" type="date" defaultValue={this.state.plandate} onChange={this.handlePlandateChange}/> 
             </td> 
-            <td className="CCSessionHearingPlace"> 
-                <input className="form-control input-sm" type="text" placeholder="Место" defaultValue={this.state.HearingPlace} onChange={this.handleHearingPlaceChange}/> 
+            <td className="ItemComment"> 
+                <input className="form-control input-sm" type="text" defaultValue={this.state.comment} onChange={this.handleCommentChange}/> 
             </td> 
-            <td className="CCSessionJudgeName"> 
-                <input className="form-control input-sm" type="text" placeholder="Судья" defaultValue={this.state.JudgeName} onChange={this.handleJudgeNameChange}/> 
+            <td className="ItemFactdate"> 
+                <input className="form-control input-sm" type="text" defaultValue={this.state.factdate} onChange={this.handleFactdateChange}/> 
             </td> 
-            <td className="CCSessionResult"> 
-                <input className="form-control input-sm" type="text" placeholder="Результат" defaultValue={this.state.SessionResult} onChange={this.handleSessionResultChange}/> 
-            </td> 
-            <td className="CCSessionResultDate"> 
-                <input className="form-control input-sm" type="date" defaultValue={this.state.SessionResultDate} onChange={this.handleSessionResultDateChange}/> 
-            </td> 
-            <td className="CCSessionEffectDate "> 
-                <input className="form-control input-sm" type="date" defaultValue={this.state.EffectDate} onChange={this.handleEffectDateChange}/> 
-            </td> 
-            <td className="CCSessionToggleEdit"><a href="#" className="btn btn-primary btn-sm" onClick={this.handleSave}>Сохранить</a></td> 
-            <td className="CCSessionDelete"><a href="#" className="btn btn-defalut btn-sm" onClick={this.handleCancel}>Отменить</a></td> 
+            <td className="ItemEdit"><a href="#" className="btn btn-primary btn-sm" onClick={this.handleSave}>Save</a></td> 
+            <td className="ItemDelete"><a href="#" className="btn btn-defalut btn-sm" onClick={this.handleCancel}>Cancel</a></td> 
         </tr>); 
     }, 
     render: function() { 
         if (this.state.edit) { 
-            return this.ccsessionRowEdit(); 
+            return this.itemRowEdit(); 
         } 
-        else { 
-            if (this.props.Errors) { 
-                return this.ccsessionRowViewError(); 
-            } 
-            else { 
-                return this.ccsessionRowView(); 
-            } 
+        else {
+            return this.itemRowView();
         } 
     } 
 }); 
 
-var CCSessionForm = React.createClass({ 
+var ItemForm = React.createClass({ 
     getInitialState: function() { 
-        return {CourtName: '', HearingDate: '', HearingPlace: '', JudgeName: '', SessionResult: ''}; 
+        return {name: '', plandate: '', comment: '', factdate: ''}; 
     }, 
-    handleCourtNameChange: function(e) { 
-        this.setState({CourtName: e.target.value}); 
+    handleNameChange: function(e) { 
+        this.setState({name: e.target.value}); 
     }, 
-    handleHearingDateChange: function(e) { 
-        this.setState({HearingDate: e.target.value}); 
+    handlePlandateChange: function(e) { 
+        this.setState({plandate: e.target.value}); 
     }, 
-    handleHearingPlaceChange: function(e) { 
-        this.setState({HearingPlace: e.target.value}); 
-    }, 
-    handleJudgeNameChange: function(e) { 
-        this.setState({JudgeName: e.target.value}); 
-    }, 
-    handleSessionResultChange: function(e) { 
-        this.setState({SessionResult: e.target.value}); 
+    handleCommentChange: function(e) { 
+        this.setState({comment: e.target.value}); 
     }, 
     handleSubmit: function(e) { 
         e.preventDefault(); 
-        var CourtName = this.state.CourtName.trim(); 
-        var HearingDate = this.state.HearingDate; 
-        var HearingPlace = this.state.HearingPlace; 
-        var JudgeName = this.state.JudgeName; 
-        var SessionResult = this.state.SessionResult.trim(); 
-        if (!CourtName || !HearingDate ) { 
+        var name = this.state.name; 
+        var plandate = this.state.plandate; 
+        var comment = this.state.comment; 
+        var factdate = this.state.factdate; 
+        if (!name || !plandate ) { 
             return; 
         } 
-        this.props.onCCSessionSubmit({ IdCourtCase: this.props.IdCourtCase, CourtName: CourtName, HearingDate: HearingDate, HearingPlace: HearingPlace, JudgeName: JudgeName, SessionResult: SessionResult}); 
-        this.setState({CourtName: '', HearingDate: '', HearingPlace: '', JudgeName: '', SessionResult: ''}); 
+        this.props.onItemSubmit({ to_do_list_id: this.props.to_do_list_id, name: name,
+        plandate: plandate, comment: comment, factdate: factdate }); 
+        this.setState({name: '', plandate: '', comment: '', factdate: ''}); 
     }, 
     render: function() { 
         return ( 
-      <form className="CCSessionForm form-inline" onSubmit={this.handleSubmit}> 
+      <form className="ItemForm form-inline" onSubmit={this.handleSubmit}> 
         <div className="form-group"> 
             <input 
             className="form-control input-sm" 
             type="text" 
-            placeholder="Наименование суда" 
-            value={this.state.CourtName} 
-            onChange={this.handleCourtNameChange} 
+            placeholder="Name" 
+            value={this.state.name} 
+            onChange={this.handleNameChange} 
             /> 
         </div> 
         <div className="form-group"> 
           <input 
             className="form-control input-sm" 
             type="date" 
-            placeholder="Дата заседания" 
-            value={this.state.HearingDate} 
-            onChange={this.handleHearingDateChange} 
+            placeholder="Plan Date" 
+            value={this.state.plandate} 
+            onChange={this.handlePlandateChange} 
             /> 
         </div> 
         <div className="form-group"> 
             <input 
             className="form-control input-sm" 
             type="text" 
-            placeholder="Место заседания" 
-            value={this.state.HearingPlace} 
-            onChange={this.handleHearingPlaceChange} 
+            placeholder="Comment" 
+            value={this.state.comment} 
+            onChange={this.handleCommentChange} 
             /> 
         </div> 
         <div className="form-group"> 
             <input 
             className="form-control input-sm" 
             type="text" 
-            placeholder="Судья" 
-            value={this.state.JudgeName} 
-            onChange={this.handleJudgeNameChange} 
+            placeholder="Fact Date" 
+            value={this.state.factdate} 
+            onChange={this.handleFactdateChange} 
             /> 
-        </div> 
-        <div className="form-group"> 
-          <input 
-            className="form-control input-sm" 
-            type="text" 
-            placeholder="Результат заседания" 
-            value={this.state.SessionResult} 
-            onChange={this.handleSessionResultChange} 
-          /> 
-        </div> 
-      <input type="submit" value="Добавить" className = "btn btn-primary"/> 
+        </div>  
+      <input type="submit" value="Add" className = "btn btn-primary"/> 
       </form> 
       ); 
     } 
 }); 
 
 ReactDOM.render( 
-  <CCSessionBox url="/" IdCourtCase={$('#to_do_list_id').val()}/>, 
+  <ItemsBox url="/" to_do_list_id={$('#to_do_list_id').val()}/>, 
   document.getElementById('contentToDo') 
 ); 
