@@ -33,12 +33,13 @@ var Item = React.createClass({
         if (!name || !plandate ) { 
             return; 
         } 
-        this.props.onItemSave({ id: this.props.id, to_do_list_id: this.props.to_do_list_id, 
+        this.props.onItemSave({ id: this.props.id, 
             name: name, plandate: plandate, comment: comment, factdate: factdate}); 
         this.setState({ edit: false }); 
     }, 
     handleDelete: function(e) { 
-        this.props.onItemDelete({ id: this.props.id, to_do_list_id: this.props.to_do_list_id}); 
+        e.preventDefault(); 
+        this.props.onItemDelete({ id: this.props.id }); 
     }, 
     itemRowView: function() { 
         return (<tr className="ItemView"> 
@@ -62,7 +63,7 @@ var Item = React.createClass({
                 <input className="form-control" type="text" defaultValue={this.state.comment} onChange={this.handleCommentChange}/> 
             </td> 
             <td className="ItemFactdate"> 
-                <input className="form-control" type="text" defaultValue={this.state.factdate} onChange={this.handleFactdateChange}/> 
+                <input className="form-control" type="date" defaultValue={this.state.factdate} onChange={this.handleFactdateChange}/> 
             </td> 
             <td className="ItemEdit"><a href="#" className="btn btn-primary" onClick={this.handleSave}>Save</a></td> 
             <td className="ItemDelete"><a href="#" className="btn btn-defalut" onClick={this.handleCancel}>Cancel</a></td> 

@@ -15,8 +15,7 @@ var ItemsList = React.createClass({
                     comment={item.comment} 
                     factdate={item.factdate} 
                     key={item.id}
-                    id={item.id}
-                    to_do_list_id={_this.props.to_do_list_id}> 
+                    id={item.id}> 
                 </Item> 
                 ); 
             }); 

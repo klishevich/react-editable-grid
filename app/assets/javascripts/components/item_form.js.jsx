@@ -11,6 +11,9 @@ var ItemForm = React.createClass({
     handleCommentChange: function(e) { 
         this.setState({comment: e.target.value}); 
     }, 
+    handleFactdateChange: function(e) { 
+        this.setState({factdate: e.target.value}); 
+    }, 
     handleSubmit: function(e) { 
         e.preventDefault(); 
         var name = this.state.name; 
@@ -40,7 +43,6 @@ var ItemForm = React.createClass({
           <input 
             className="form-control" 
             type="date" 
-            placeholder="Plan Date" 
             value={this.state.plandate} 
             onChange={this.handlePlandateChange} 
             /> 
@@ -58,7 +60,6 @@ var ItemForm = React.createClass({
             <input 
             className="form-control" 
             type="date" 
-            placeholder="Fact Date" 
             value={this.state.factdate} 
             onChange={this.handleFactdateChange} 
             /> 

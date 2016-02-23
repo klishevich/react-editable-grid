@@ -7,4 +7,4 @@
   <% end %>
 </div>
 <a href="/" class="btn btn-default">Back to Lists</a>
-<%= react_component('ItemsBox', url: "/", to_do_list_id: @todo.id) %>
+<%= react_component('ItemsBox', { url: "/", to_do_list_id: @todo.id } ) %>

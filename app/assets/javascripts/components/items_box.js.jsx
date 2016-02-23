@@ -23,7 +23,7 @@ var ItemsBox = React.createClass({
             url: '/to_do_lists/' + this.props.to_do_list_id + '/to_do_list_items', 
             dataType: 'json', 
             type: 'POST', 
-            data: item, 
+            data: { to_do_list_item: item }, 
             success: function(data) { 
                 this.setState({data: data}); 
             }.bind(this), 
@@ -37,7 +37,7 @@ var ItemsBox = React.createClass({
             url: '/to_do_lists/' + this.props.to_do_list_id + '/to_do_list_items/' + item.id, 
             dataType: 'json', 
             type: 'PUT', 
-            data: item, 
+            data: { to_do_list_item: item }, 
             success: function(data) { 
                 this.setState({data: data}); 
             }.bind(this), 
@@ -50,8 +50,7 @@ var ItemsBox = React.createClass({
         $.ajax({ 
             url: '/to_do_lists/' + this.props.to_do_list_id + '/to_do_list_items/' + item.id, 
             dataType: 'json', 
-            type: 'DELETE', 
-            data: item, 
+            type: 'DELETE',  
             success: function(data) { 
                 this.setState({data: data}); 
             }.bind(this), 
@@ -64,7 +63,7 @@ var ItemsBox = React.createClass({
         return ( 
           <div className="ItemsBox"> 
             <h3>ToDo List Items</h3> 
-            <ItemsList data={this.state.data} onItemDelete2={this.handleItemDelete2} onItemSave2={this.handleItemSave2} to_do_list_id = {this.props.to_do_list_id}/> 
+            <ItemsList data={this.state.data} onItemDelete2={this.handleItemDelete2} onItemSave2={this.handleItemSave2} /> 
             <ItemForm onItemSubmit={this.handleItemSubmit} to_do_list_id = {this.props.to_do_list_id} /> 
           </div> 
       ); 
