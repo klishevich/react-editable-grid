@@ -1,10 +1,19 @@
 #encoding: utf-8
+puts 'Delete Priorities'
+Priority.delete_all
 
 puts 'Delete ToDoListItems'
 ToDoListItem.delete_all
 
 puts 'Delete ToDoLists'
 ToDoList.delete_all
+
+puts 'Create Priorities'
+Priority.create([
+  {name: "low"},
+  {name: "average"},
+  {name: "high"}
+])
 
 puts 'Create ToDoLists'
 ToDoList.create([

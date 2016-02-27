@@ -13,8 +13,15 @@
 
 ActiveRecord::Schema.define(version: 20160221132434) do
 
+  create_table "priorities", force: :cascade do |t|
+    t.string   "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "to_do_list_items", force: :cascade do |t|
     t.integer  "to_do_list_id"
+    t.integer  "priority_id"
     t.string   "name"
     t.date     "plandate"
     t.string   "comment"
@@ -23,6 +30,7 @@ ActiveRecord::Schema.define(version: 20160221132434) do
     t.datetime "updated_at",    null: false
   end
 
+  add_index "to_do_list_items", ["priority_id"], name: "index_to_do_list_items_on_priority_id"
   add_index "to_do_list_items", ["to_do_list_id"], name: "index_to_do_list_items_on_to_do_list_id"
 
   create_table "to_do_lists", force: :cascade do |t|

@@ -1,7 +1,8 @@
 var ItemsBox = React.createClass({ 
     getInitialState: function() { 
-        this.loadItemsFromServer(); 
-        return {data: []}; 
+        this.loadItemsFromServer();
+        this.loadDictPriorityFromServer(); 
+        return {data: [], dictpriority: []}; 
     }, 
     loadItemsFromServer: function() { 
         $.ajax({ 
@@ -17,7 +18,22 @@ var ItemsBox = React.createClass({
                 console.error(this.props.url, status, err.toString()); 
             }.bind(this) 
         }); 
-    }, 
+    },
+    loadDictPriorityFromServer: function() { 
+        $.ajax({ 
+            url: '/priorities', 
+            dataType: 'json', 
+            cache: false, 
+            success: function(dictpriority) { 
+                if (this.isMounted()) { 
+                    this.setState({dictpriority: dictpriority}); 
+                } 
+            }.bind(this), 
+            error: function(xhr, status, err) { 
+                console.error(this.props.url, status, err.toString()); 
+            }.bind(this) 
+        }); 
+    },
     handleItemSubmit: function(item) { 
         $.ajax({ 
             url: '/to_do_lists/' + this.props.to_do_list_id + '/to_do_list_items', 
@@ -64,7 +80,8 @@ var ItemsBox = React.createClass({
           <div className="ItemsBox"> 
             <h3>ToDo List Items</h3> 
             <ItemsList data={this.state.data} onItemDelete2={this.handleItemDelete2} onItemSave2={this.handleItemSave2} /> 
-            <ItemForm onItemSubmit={this.handleItemSubmit} to_do_list_id = {this.props.to_do_list_id} /> 
+            <ItemForm onItemSubmit={this.handleItemSubmit} to_do_list_id = {this.props.to_do_list_id} 
+            dictpriority={this.state.dictpriority}/> 
           </div> 
       ); 
     } 

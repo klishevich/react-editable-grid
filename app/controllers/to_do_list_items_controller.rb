@@ -40,7 +40,7 @@ class ToDoListItemsController < ApplicationController
   private
 
   def item_params
-    params.require(:to_do_list_item).permit(:name, :plandate, :comment, :factdate, :to_do_list_id)
+    params.require(:to_do_list_item).permit(:name, :plandate, :comment, :factdate, :to_do_list_id, :priority_id)
   end  
 
 end

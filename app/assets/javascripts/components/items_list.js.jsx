@@ -13,7 +13,8 @@ var ItemsList = React.createClass({
                     name={item.name} 
                     plandate={item.plandate} 
                     comment={item.comment} 
-                    factdate={item.factdate} 
+                    factdate={item.factdate}
+                    priority_id={item.priority_id} 
                     key={item.id}
                     id={item.id}> 
                 </Item> 
@@ -27,6 +28,7 @@ var ItemsList = React.createClass({
                 <th>Plan Date</th> 
                 <th>Comment</th> 
                 <th>Fact Date</th>
+                <th width="150px">Priority</th>
                 <th width="100px"></th>
                 <th width="100px"></th>
             </tr> 

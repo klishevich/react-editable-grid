@@ -4,6 +4,7 @@ Rails.application.routes.draw do
   # See how all your routes lay out with "rake routes".
 
   # You can have the root of your site routed with "root"
+  get 'priorities', to: 'priorities#index'
   root 'to_do_lists#index'
 
   # Example of regular route:
