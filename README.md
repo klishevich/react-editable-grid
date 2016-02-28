@@ -13,6 +13,7 @@ Grid has following functionality:
 * Delete record
 * Null check for new items
 * Dropdown select (Load data from server)
+* Sorting by priority
 
 ## Installation
 
@@ -25,7 +26,6 @@ Grid has following functionality:
 
 Maybe I will improve grid by adding functionality:
 
-* Sorting
 * Grouping and filtering
 * Pagination
 
