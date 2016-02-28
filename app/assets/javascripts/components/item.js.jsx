@@ -43,7 +43,8 @@ var Item = React.createClass({
             <td className="ItemComment">{this.props.comment}</td> 
             <td className="ItemFactdate">{this.props.factdate}</td> 
             <td className="ItemPriority">
-                <PrioritySelect view="true" priority_id={this.props.priority_id} onSelectChange={this.handleSelectChange}/> 
+              <PrioritySelect view="true" priority_id={this.props.priority_id}
+                  dictpriority={this.props.dictpriority}/> 
             </td> 
             <td className="ItemEdit"><a href="#" className="btn btn-primary" onClick={this.handleEdit}>Edit</a></td> 
             <td className="ItemDelete"><a href="#" className="btn btn-danger" onClick={this.handleDelete}>Delete</a></td> 
@@ -64,7 +65,8 @@ var Item = React.createClass({
                 <input className="form-control" type="date" defaultValue={this.state.factdate} name="factdate" onChange={this.handleChange}/> 
             </td> 
             <td className="ItemPriority"> 
-                <PrioritySelect priority_id={this.state.priority_id} onSelectChange={this.handleSelectChange}/> 
+                <PrioritySelect priority_id={this.state.priority_id} onSelectChange={this.handleSelectChange}
+                  dictpriority={this.props.dictpriority}/> 
             </td> 
             <td className="ItemEdit"><a href="#" className="btn btn-primary" onClick={this.handleSave}>Save</a></td> 
             <td className="ItemDelete"><a href="#" className="btn btn-defalut" onClick={this.handleCancel}>Cancel</a></td> 

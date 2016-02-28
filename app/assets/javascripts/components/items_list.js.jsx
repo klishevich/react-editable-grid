@@ -16,10 +16,11 @@ var ItemsList = React.createClass({
                     factdate={item.factdate}
                     priority_id={item.priority_id} 
                     key={item.id}
-                    id={item.id}> 
+                    id={item.id}
+                    dictpriority={_this.props.dictpriority}> 
                 </Item> 
-                ); 
-            }); 
+            ); 
+        }); 
         return ( 
           <table className="ItemsList table table-striped"> 
             <tbody> 

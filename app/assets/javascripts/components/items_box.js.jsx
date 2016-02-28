@@ -79,9 +79,10 @@ var ItemsBox = React.createClass({
         return ( 
           <div className="ItemsBox"> 
             <h3>ToDo List Items</h3> 
-            <ItemsList data={this.state.data} onItemDelete2={this.handleItemDelete2} onItemSave2={this.handleItemSave2} /> 
+            <ItemsList data={this.state.data} onItemDelete2={this.handleItemDelete2} 
+              onItemSave2={this.handleItemSave2} dictpriority={this.state.dictpriority}/> 
             <ItemForm onItemSubmit={this.handleItemSubmit} to_do_list_id = {this.props.to_do_list_id} 
-            dictpriority={this.state.dictpriority}/> 
+              dictpriority={this.state.dictpriority}/> 
           </div> 
       ); 
     } 

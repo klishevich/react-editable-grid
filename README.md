@@ -12,7 +12,7 @@ Grid has following functionality:
 * Edit record
 * Delete record
 * Null check for new items
-* Dropdown select
+* Dropdown select (Load data from server)
 
 ## Installation
 

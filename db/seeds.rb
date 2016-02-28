@@ -10,9 +10,9 @@ ToDoList.delete_all
 
 puts 'Create Priorities'
 Priority.create([
-  {name: "low"},
-  {name: "average"},
-  {name: "high"}
+  {name: "Low"},
+  {name: "Average"},
+  {name: "High"}
 ])
 
 puts 'Create ToDoLists'

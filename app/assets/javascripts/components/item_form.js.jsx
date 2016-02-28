@@ -63,7 +63,8 @@ var ItemForm = React.createClass({
             onChange={this.handleChange} 
             /> 
         </div>
-        <PrioritySelect priority_id={this.state.priority_id} onSelectChange={this.handleSelectChange}/>  
+        <PrioritySelect priority_id={this.state.priority_id} onSelectChange={this.handleSelectChange}
+          dictpriority={this.props.dictpriority}/>  
       <input type="submit" value="Add" className = "btn btn-primary"/> 
       </form> 
       ); 
