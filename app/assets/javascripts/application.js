@@ -15,5 +15,9 @@
 //= require bootstrap.min
 //= require react
 //= require react_ujs
+//= require moment/moment
+//= require moment/locale/en-gb
+//= require react-widgets
+//= require react-widgets-moment
 //= require components
 //= require_tree .

@@ -15,3 +15,6 @@
 /log/*
 !/log/.keep
 /tmp
+
+# Ignore Node.js Modules, I copy them to vendor/assets
+/node_modules

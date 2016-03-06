@@ -54,7 +54,7 @@ var ItemsList = React.createClass({
             <tbody> 
             <tr> 
                 <th>Item Name</th> 
-                <th>Plan Date</th> 
+                <th>Plan Date Time</th> 
                 <th>Comment</th> 
                 <th>Fact Date</th>
                 <th width="150px">

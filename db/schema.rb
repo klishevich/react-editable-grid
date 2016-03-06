@@ -23,7 +23,7 @@ ActiveRecord::Schema.define(version: 20160221132434) do
     t.integer  "to_do_list_id"
     t.integer  "priority_id"
     t.string   "name"
-    t.date     "plandate"
+    t.datetime "plandate"
     t.string   "comment"
     t.date     "factdate"
     t.datetime "created_at",    null: false

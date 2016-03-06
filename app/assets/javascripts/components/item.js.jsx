@@ -36,12 +36,36 @@ var Item = React.createClass({
         e.preventDefault(); 
         this.props.onItemDelete({ id: this.props.id }); 
     }, 
+    datePickerEdit: function(string_date) {
+        if (string_date){
+            return moment(string_date).toDate();
+        }
+        else {
+            return null;
+        }
+    },
+    datePickerShow: function(string_date) {
+        if (string_date){
+            return moment(string_date).format("DD.MM.YYYY");
+        }
+        else {
+            return null;
+        }
+    },
+    dateTimePickerShow: function(string_date) {
+        if (string_date){
+            return moment(string_date).format("DD.MM.YYYY hh:mm");
+        }
+        else {
+            return null;
+        }
+    },
     itemRowView: function() { 
         return (<tr className="ItemView"> 
             <td className="ItemName">{this.props.name}</td> 
-            <td className="ItemPlandate">{this.props.plandate}</td> 
+            <td className="ItemPlandate">{this.dateTimePickerShow(this.props.plandate)}</td> 
             <td className="ItemComment">{this.props.comment}</td> 
-            <td className="ItemFactdate">{this.props.factdate}</td> 
+            <td className="ItemFactdate">{this.datePickerShow(this.props.factdate)}</td> 
             <td className="ItemPriority">
               <PrioritySelect view="true" priority_id={this.props.priority_id}
                   dictpriority={this.props.dictpriority}/> 
@@ -49,20 +73,27 @@ var Item = React.createClass({
             <td className="ItemEdit"><a href="#" className="btn btn-primary" onClick={this.handleEdit}>Edit</a></td> 
             <td className="ItemDelete"><a href="#" className="btn btn-danger" onClick={this.handleDelete}>Delete</a></td> 
         </tr>); 
-    },  
+    },
     itemRowEdit: function() { 
+        var changeDate = (name, value) => this.setState({ [name]: value });
         return (<tr className="ItemEdit"> 
             <td className="ItemName"> 
                 <input className="form-control" type="text" defaultValue={this.state.name} name="name" onChange={this.handleChange} /> 
             </td> 
             <td className="ItemPlandate"> 
-                <input className="form-control" type="date" defaultValue={this.state.plandate} name="plandate" onChange={this.handleChange}/> 
+                <DateTimePicker value={this.datePickerEdit(this.state.plandate)} 
+                  onChange={changeDate.bind(null, 'plandate')}
+                  format={"DD.MM.YYYY hh:mm"}/>
             </td> 
             <td className="ItemComment"> 
                 <input className="form-control" type="text" defaultValue={this.state.comment} name="comment" onChange={this.handleChange}/> 
             </td> 
             <td className="ItemFactdate"> 
-                <input className="form-control" type="date" defaultValue={this.state.factdate} name="factdate" onChange={this.handleChange}/> 
+                <DateTimePicker value={this.datePickerEdit(this.state.factdate)} 
+                  defaultValue={null}
+                  onChange={changeDate.bind(null, 'factdate')}
+                  time={false}
+                  format={"DD.MM.YYYY"}/>
             </td> 
             <td className="ItemPriority"> 
                 <PrioritySelect priority_id={this.state.priority_id} onSelectChange={this.handleSelectChange}

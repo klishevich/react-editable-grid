@@ -1,3 +1,7 @@
+var DropdownList = ReactWidgets.DropdownList;
+var colors = ['orange', 'red', 'blue', 'purple'];
+var DateTimePicker = ReactWidgets.DateTimePicker;
+
 var ItemsBox = React.createClass({ 
     getInitialState: function() { 
         this.loadItemsFromServer();

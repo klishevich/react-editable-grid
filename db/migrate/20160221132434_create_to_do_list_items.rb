@@ -4,7 +4,7 @@ class CreateToDoListItems < ActiveRecord::Migration
       t.references :to_do_list, index: true, foreign_key: true
       t.references :priority, index: true, foreign_key: true
       t.string :name
-      t.date :plandate
+      t.datetime :plandate
       t.string :comment
       t.date :factdate
 
